@@ -292,6 +292,10 @@ The client initiates the transmission control protocol (TCP) handshake negotiati
 After the TCP connection is established the server shares its public host key which the client can use to identify the host. \
 Now both parties negotiate a session key using a version of something called the Diffie-Hellman algorithm. This algorithm (and its variants) make it possible for each party to combine their own private data with public data from the other system to arrive at an identical secret session key.
 
+The next step is user authentication which can be done in a few different methods. \
+The general method is password authentication, which is when the servers prompts the user to enter a password. The password is encrypted by the shared secret session key which was generated earlier. \
+Another method is the use of SSH key pair alternatives. \
+
         ssh -i ./sshkey.private bandit14@bandit.labs.overthewire.org -p 2220
 
 Then read the password
@@ -308,7 +312,7 @@ Then read the password
 
 Telnet can be used to connect to localhost. \
 Before `ssh`, telnet was used to connect to remote shell but it was unsecure which means anyone could sniff the packets flowing through telnet protocol \
-Since we are connecting to localhost's port (Ports are vitual points where network communication happenn. These ports are managed by the operating system) 30000 we can use telnet. \
+Since we are connecting to localhost's port (Ports are vitual points where network communication happenn) 30000 we can use telnet. 
 
 ![](./sc/sc15.png)
 
@@ -320,28 +324,21 @@ The password: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
 
 # Level 15 -> Level 16
 The Secure Socket Layer (SSL) is a cryptographic protocol designed to provide secure communication over a computer network \
-The Transport Layer Security (TLS) is the successor to SSL and is designed to provide improved security and efficiency. TLS was developed as an enhancement of SSL to the address various vulnerabilities and to the incorporate modern cryptographic techniques\
-OpenSSL is an all-around cryptography library that offers an open-source application of the TLS protocol.
+The Transport Layer Security (TLS) is the successor to SSL and is designed to provide improved security and efficiency. TLS was developed as an enhancement of SSL to the address various vulnerabilities and to the incorporate modern cryptographic techniques
 
-The flag `s_client` specified `TLS` encryption technique when connecting.
+Ncat is a feature-packed networking utility which reads and writes data across networks from the command line.
 
-    bandit15@bandit:~$ openssl s_client -connect localhost:30001
-
-    
-    ---
-    read R BLOCK
+    bandit15@bandit:~$ ncat --ssl localhost 30001
     8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
     Correct!
     kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
-
-    closed
 
 ***
 
 &nbsp;
 
 # Level 16 -> Level 17
-The list of ports that are open on localhost \
+We can scan ports using the nmap command \
 `nmap -sV localhost -p 31000-32000`
     
     bandit16@bandit:~$ nmap -sV localhost -p 31000-32000
@@ -372,7 +369,6 @@ Now we connect to that port and provide the password
     -----BEGIN RSA PRIVATE KEY-----
     MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
 
-(I dont know why openssl was not working, when i entered the password it returned keyupdate)
 
 Now we save this private key into a file and use it to `ssh` into bandit17
 
