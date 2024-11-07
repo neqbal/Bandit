@@ -80,3 +80,21 @@ So our player in this case has no instruction.
 ***
 
 # Verify
+
+Checksums are values derived from a data set to help verify the integrity of that data. They are generally used to detect errors in data during transmission or storage.
+
+A checksum for a data will be same each time it is generated. 
+
+The checksum of the flag file is already givem so we just have to generate checksums of all the files in the `files` directory and match it with the given checksum and that will give us the right file. 
+
+        
+    ctf-player@pico-chall$ sha256sum files/* | grep -f checksum.txt    
+    5848768e56185707f76c1d74f34f4e03fb0573ecc1ca7b11238007226654bcda  files/8eee7195
+    ctf-player@pico-chall$ ./decrypt.sh files/8eee7195
+    picoCTF{trust_but_verify_8eee7195}
+
+&nbsp;
+
+***
+
+# Mob psycho
